@@ -62,8 +62,8 @@ router.get('/shop', async function(req, res, next) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: stripeCard,
-      success_url: 'http://192.168.1.62:3000/success?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'http://192.168.1.62:3000/',
+      success_url: 'https://bike-shop-2020.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: 'https://bike-shop-2020.herokuapp.com/',
     });
 
     sessionStripeID = session.id
