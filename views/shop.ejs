@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Darker+Grotesque&display=swap" rel="stylesheet">
+
+        <script src="https://kit.fontawesome.com/a41e9403cf.js" crossorigin="anonymous"></script>
+        <title>La boutique du Vélo - Panier</title>
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+
+            <!-- HEADER -->
+            <div class="row">
+  
+                <nav class=" header col-12 navbar navbar-light bg-dark">
+                        <a class="navbar" href="/">
+                        <img src="/images/bike-logo.svg" width="50" height="50" class="logo" alt="">
+                        La boutique du Vélo
+                        </a>
+                </nav>
+  
+            </div>  
+            <div class="row ariane">
+                <nav aria-label="breadcrumb" class="col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Boutique</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Panier</li>
+                    </ol>
+                </nav>
+            </div>
+
+
+            <h1>Panier</h1>
+
+            <% if(dataCardBike.length < 1){%>
+                <h5 class="no-article">Vous n'avez aucun article dans le panier</h5>
+            
+            <%} else {%>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Aperçu</th>
+                            <th scope="col">Modèle</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Supprimer</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <% 
+    
+                            var totalCmd = 0;
+                            for(var i=0;i<dataCardBike.length;i++){
+                            %>
+                                <tr class="basket-item">
+                                    <th scope="row"><%=i%></th>
+                                    <td><img src=<%= dataCardBike[i].url %> class="basket-img"></td>
+                                    <td>
+                                        <%= dataCardBike[i].name %>
+                                    </td>
+                                    <td>
+                                        <form action="/update-shop" method="POST">
+                                            <input type="hidden" name="position" value="<%=i%>">
+                                            <input type="text" name="quantity" value="<%= dataCardBike[i].quantity%>">
+                                            <button type="submit" class="btn btn-outline-info btn-sm" name="button"><i class="fas fa-sync-alt"></i></button>
+                                        </form>
+                                    </td>
+                                    <td><%= dataCardBike[i].price %>€</td>
+                                    <td><%= dataCardBike[i].price * dataCardBike[i].quantity %>€</td>
+                                    <td><a href="/delete-shop?position=<%=i%>"><button class="btn btn-outline-info btn-sm" name="button"><i class="far fa-trash-alt"></i></button></a></td>
+                                </tr>
+                            <%
+                                totalCmd += dataCardBike[i].price * dataCardBike[i].quantity;
+                            }
+                            %>
+                            
+    
+                          <tr>
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="total-box">Total Panier : </td>
+                            <td><%= totalCmd %>€</td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <button id="checkout" class="btn btn-outline-info btn-sm btn-checkout" name="button-checkout">Paiement</button>
+                    </div>
+                </div>
+
+
+            <%}%>
+            
+            
+                
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script>
+            const sessionStripeID = "<%=sessionStripeID%>"
+        </script>
+        <script src="/javascripts/script.js"></script>
+    </body>
+</html>
